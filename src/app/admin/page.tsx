@@ -2,12 +2,13 @@
 
 import { useRef, useState } from "react";
 import { addRecipe } from "../../lib/recipeAPI";
+import Storage from "@aws-amplify/storage"; // Import the Storage module
 
 export default function AdminPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Category options (alphabetical)
+  // Sorted Category options
   const categoryOptions = [
     "Appetizers",
     "Bowls",
@@ -28,7 +29,7 @@ export default function AdminPage() {
   const [station, setStation] = useState<string[]>([]);
 
   // Concept options (alphabetical) as multi-select checkboxes
-  const conceptOptions = ["Beso", "Blu Pointe", "Market Place", "Mercato", "MP Tavern"];
+  const conceptOptions = ["Blu Pointe", "Beso", "Market Place", "Mercato", "MP Tavern"];
   const [concept, setConcept] = useState<string[]>([]);
 
   const [imageUrl, setImageUrl] = useState("");
@@ -36,12 +37,20 @@ export default function AdminPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const previewUrl = URL.createObjectURL(file);
-      setImageUrl(previewUrl);
-      // In production, upload the file and use the returned URL.
+      try {
+        // Cast Storage to any so that we can access the put method without TypeScript errors.
+        const storage: any = Storage;
+        const result = await storage.put(file.name, file, {
+          contentType: file.type,
+        });
+        const url = await storage.get(result.key);
+        setImageUrl(url);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchRecipes } from "../../lib/recipeAPI";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import Image from "next/image";
 
-// Define the Recipe type
 type Recipe = {
   id: string;
   title: string;
   description: string;
   imageUrl?: string;
   category?: string;
+  station?: string;
+  concept?: string[];
   location?: string;
 };
 
@@ -23,7 +25,8 @@ export default function RecipesPage() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchRecipes();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data: any = await fetchRecipes();
         setRecipes(data);
       } catch (error) {
         console.error("Error fetching recipes", error);
@@ -33,28 +36,29 @@ export default function RecipesPage() {
     })();
   }, []);
 
-  // Build a list of unique categories from the recipes
   const categories = ["All", ...new Set(recipes.map((r) => r.category).filter(Boolean))];
 
-  // Filter recipes based on the selected category
   const filteredRecipes =
     selectedCategory === "All"
       ? recipes
       : recipes.filter((r) => r.category === selectedCategory);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Recipe Carousel</h1>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Recipe Carousel</h1>
       {loading ? (
         <p>Loading recipes...</p>
       ) : (
         <>
-          <div style={{ marginBottom: "20px" }}>
-            <label htmlFor="category-select">Filter by Category: </label>
+          <div className="mb-4">
+            <label htmlFor="category-select" className="mr-2">
+              Filter by Category:
+            </label>
             <select
               id="category-select"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border rounded p-1"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -64,16 +68,23 @@ export default function RecipesPage() {
             </select>
           </div>
           {filteredRecipes.length === 0 ? (
-            <p>No recipes found.</p>
+            <p>No recipes found for this category.</p>
           ) : (
             <Swiper spaceBetween={30} slidesPerView={1}>
               {filteredRecipes.map((recipe) => (
                 <SwiperSlide key={recipe.id}>
-                  <div style={{ padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
-                    <h2>{recipe.title}</h2>
+                  <div className="p-4 border rounded">
+                    <h2 className="text-xl font-semibold">{recipe.title}</h2>
                     <p>{recipe.description}</p>
                     {recipe.imageUrl && (
-                      <img src={recipe.imageUrl} alt={recipe.title} style={{ width: "100%", height: "auto" }} />
+                      <div className="mt-2 relative w-full h-64">
+                        <Image
+                          src={recipe.imageUrl}
+                          alt={recipe.title}
+                          layout="fill"
+                          objectFit="contain"
+                        />
+                      </div>
                     )}
                   </div>
                 </SwiperSlide>

@@ -17,6 +17,9 @@
       },
       "api": {
         "mhgrecipeapp": {}
+      },
+      "storage": {
+        "s3eab8538f": {}
       }
     }
   }
