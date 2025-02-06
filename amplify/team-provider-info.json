@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mhgrecipeapp-dev-7c9c7-authRole",
+      "UnauthRoleArn": "arn:aws:iam::342117784142:role/amplify-mhgrecipeapp-dev-7c9c7-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::342117784142:role/amplify-mhgrecipeapp-dev-7c9c7-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mhgrecipeapp-dev-7c9c7-deployment",
+      "UnauthRoleName": "amplify-mhgrecipeapp-dev-7c9c7-unauthRole",
+      "StackName": "amplify-mhgrecipeapp-dev-7c9c7",
+      "StackId": "arn:aws:cloudformation:us-east-1:342117784142:stack/amplify-mhgrecipeapp-dev-7c9c7/671703c0-e3fc-11ef-87ca-0affd1b527fb",
+      "AmplifyAppId": "dmog89suudz2"
+    },
+    "categories": {
+      "auth": {
+        "mhgrecipeapp0948e801": {}
+      },
+      "api": {
+        "mhgrecipeapp": {}
+      }
+    }
+  }
+}
