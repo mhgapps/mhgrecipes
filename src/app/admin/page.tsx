@@ -2,7 +2,9 @@
 
 import { useRef, useState } from "react";
 import { addRecipe } from "../../lib/recipeAPI";
-import Storage from "@aws-amplify/storage"; // Import the Storage module
+import * as AmplifyStorage from "@aws-amplify/storage"; // Namespace import
+
+// Other parts of your code remain unchanged.
 
 export default function AdminPage() {
   const [title, setTitle] = useState("");
@@ -41,8 +43,9 @@ export default function AdminPage() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       try {
-        // Cast Storage to any so that we can access the put method without TypeScript errors.
-        const storage: any = Storage;
+        // Cast the imported storage module to any to bypass TS type errors.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const storage: any = AmplifyStorage;
         const result = await storage.put(file.name, file, {
           contentType: file.type,
         });

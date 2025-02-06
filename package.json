@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/storage": "^6.7.9",
-    "aws-amplify": "^6.12.3",
+    "aws-amplify": "^4.3.23",
     "next": "15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
